@@ -1,0 +1,148 @@
+---
+title: "M02 Reflection: In-depth Quarto, Data Science, and R’s Capabilities"
+author: "Yujia Luo"
+subtitle: "IBM 6500 | Fall 2026"
+lang: en
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    code-link: true
+    embed-resources: true
+    theme: cosmo
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+execute:
+  warning: false
+  message: false
+editor: visual
+---
+
+## Overview {#sec-overview}
+
+This reflection summarizes the ideas from Module 02 and connects them to my developing interests in data analysis and business/marketing analytics. The report addresses six reflection prompts and considers how these tools can support my studies and future work in marketing analytics.
+
+**Main takeaway.** The most important lesson from this module is that data science is not only about producing an answer. It is also about making the work understandable, reproducible, inspectable, and useful to another person.
+
+## Prompt 1: Reproducible data science and literate coding
+
+**Prompt:** *Summarize new things you learned in this module about reproducible data science and literate coding.*
+
+I learned that reproducible data science means designing an analysis so that another person can understand what was done and, given the same inputs and computing environment, obtain the same or a meaningfully similar result. Reproducibility therefore involves more than saving a final chart. It includes organizing files, recording the steps used to transform data, documenting assumptions, and keeping the analysis connected to its source code.
+
+Literate coding helped me see how explanation and computation can belong in the same document. Instead of separating a narrative report from a hidden script, a Quarto document can place headings, prose, code, output, tables, and figures together. This makes the reasoning visible: the reader can understand both *what* the result is and *how* it was produced. It also makes revision easier because changing the code allows the report to be rendered again (Quarto, n.d.-b).
+
+In practical work, I would use a project folder, relative paths, version control, and a clear README. I would also record package versions and avoid manually editing generated results. These habits reduce the risk of losing the steps behind an analysis or accidentally presenting an outdated result.
+
+## Prompt 2: The Quarto lecture
+
+**Prompt:** *Summarize the instructor's lecture about Quarto that you found impressive. Do you see yourself using Quarto every day for your job or study, like taking notes in your class or preparing a presentation?*
+
+The Quarto capability I find most impressive is the idea that one source document can produce several kinds of professional outputs. The same project can support an HTML report, PDF, presentation, website page, or other format while keeping the analysis and explanation connected. I also found the combination of Markdown, executable code, YAML options, cross-references, citations, and styling useful because it gives the author control over both content and presentation.
+
+I can see myself using Quarto regularly, although perhaps not for every small note. It would be especially useful for class projects, analytical memos, research notes, dashboards, and presentations that need to be updated when the data changes. A Quarto report could also serve as a study record: I could explain a concept in prose, include a short R example, and preserve the output beside the explanation. That would be more useful than keeping disconnected notes and code files.
+
+### Publishing a single report with GitHub Pages
+
+The publication step helps me distinguish the editable `.qmd` source from the HTML page that a reader opens. For a simple single-report site, the rendered report can be published as `index.html` in the configured GitHub Pages publishing location. Uploading a QMD file alone does not automatically give visitors a finished report. Quarto's GitHub Pages documentation describes publication workflows and the role of the rendered website files (Quarto, n.d.-a).
+
+For my coursework, I would keep the source under version control, render the report, and check the published page in a browser. I would verify the headings, figures, and links rather than assume that a successful upload means the report works. An embedded-resource HTML file can simplify sharing, although external links and online services can still require internet access. This workflow would help me share analytical work with a professor or a potential employer while preserving an editable source for later updates.
+
+## Prompt 3: The reproducibility crisis
+
+**Prompt:** *Summarize the video presentation about the reproducibility crisis. What do you think about reproducibility crisis in your field? How can Quarto help address the concerns you have about reproducibility in the line of your work?*
+
+My main takeaway about the reproducibility crisis is that a result may fail to reproduce for many reasons: incomplete documentation, unavailable data, changing software versions, selective reporting, weak experimental design, or simple errors in analysis. A result can be presented confidently while still being difficult for another researcher to verify. The reproducibility crisis is therefore not only a problem of dishonesty. It is also a problem of incentives, complexity, time pressure, and workflows that do not preserve enough information.
+
+In business and marketing analytics, reproducibility matters because decisions may depend on segmentation, campaign measurement, forecasting, or customer research. If an analyst cannot show how a metric was calculated, a later analyst may not know whether a change reflects real customer behavior or a changed filter, data source, or definition. Reproducible work supports trust and makes it easier to audit a recommendation. For example, when comparing advertising campaigns, I would record the reporting period, attribution rules, and whether conversions mean leads or completed purchases. Otherwise, two reports could appear to disagree simply because they use different definitions.
+
+Quarto can address part of this problem by keeping the narrative, code, tables, and figures together. A report can display analysis steps when its code is made visible, and it can be regenerated when the data or assumptions change. GitHub can preserve the history of the project, while a self-contained HTML file can make the final result easy to share. Quarto cannot fix biased data or poor research design by itself, but it can make omissions more visible and make responsible workflows easier to maintain.
+
+## Prompt 4: The Tidyverse ecosystem and R
+
+**Prompt:** *Summarize what you learned in this module about the Tidyverse ecosystem in R. What can you do with R?*
+
+I learned that the Tidyverse is an ecosystem of packages designed to work together around a consistent data workflow. `dplyr` supports data transformation, `tidyr` supports reshaping and tidying, `ggplot2` supports visualization, `readr` supports importing rectangular data, and `stringr` and `forcats` help with text and categorical variables. The value is not only the individual functions; it is the consistency of the grammar and the ability to combine steps with pipes (Tidyverse, n.d.).
+
+With R, I can import and clean data, create summary statistics, visualize patterns, join datasets, build statistical models, run simulations, and communicate findings in a report. R is also useful for creating reproducible documents and interactive outputs. For example, a customer dataset could be cleaned with `dplyr`, explored with `ggplot2`, modeled, and then explained in a Quarto report without manually copying results into a separate document.
+
+For a marketing example, I would import campaign data with `readr`, use `dplyr` to summarize spending and conversions by channel, and visualize the comparison with `ggplot2`. I would calculate cost per conversion as total channel spending divided by total channel conversions, rather than simply averaging row-level ratios. I would also check missing values and channels with zero conversions before interpreting the result. This example reminds me that readable code still requires careful analytical decisions.
+
+### A reproducible visualization example
+
+The following example uses `ggplot2` with R's built-in `mtcars` dataset. It illustrates how code and a figure can sit beside an explanation in a Quarto report.
+
+```{r}
+#| label: fig-workflow-example
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 8
+#| fig-height: 5.5
+#| fig-cap: "A simple visualization example using R's built-in mtcars dataset."
+
+library(ggplot2)
+
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 2.5) +
+  scale_color_manual(values = c("#F8766D", "#00BA38", "#619CFF")) +
+  labs(
+    x = "Weight (1,000 lbs)",
+    y = "Miles per gallon",
+    color = "Cylinders"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+@fig-workflow-example shows that heavier cars generally have lower miles per gallon in this dataset. The colors distinguish cylinder groups. This is a descriptive relationship, not proof that vehicle weight alone causes the difference in fuel economy. The example also reminds me to label units clearly and explain what a reader should learn from a chart. Although these are automobile data rather than marketing data, the same reporting principle applies when I visualize campaign performance or customer behavior.
+
+## Prompt 5: Two packages beyond the core ecosystem
+
+**Prompt:** *Refer to the video introducing twenty packages. Among the various packages introduced, choose two packages beyond the Tidyverse ecosystem, base R, and Quarto that could enhance your job/career. Tell me why you think so.*
+
+### `randomForest`
+
+The first package I would choose is `randomForest`, which implements random forests for classification and regression (CRAN, n.d.). It could support my career in marketing analytics by helping me explore customer response or predict a numerical outcome such as purchase value. For example, a classification model could estimate which customers are more likely to respond to a campaign using information available before the campaign begins.
+
+Its usefulness would depend on how carefully I evaluate the model. I would separate training and test data, compare performance with a simpler baseline, and avoid including information that would not be available at prediction time. I would also remember that a useful predictor does not necessarily identify a cause. My goal would be to support a marketing decision with validated evidence, rather than assume a more complex model automatically produces a better recommendation.
+
+### `leaflet`
+
+The second package is `leaflet`, which can create interactive maps in R (Leaflet for R, n.d.). Location can be important for retail analysis, service coverage, campaign planning, and customer segmentation. An interactive map can help a decision-maker explore patterns that are difficult to see in a static table. I would use it to support a clear question—for example, comparing customer density with store locations—rather than adding a map only for decoration.
+
+These packages would extend my work beyond basic data cleaning and plotting. `randomForest` would support predictive analysis, while `leaflet` would support geographical exploration and communication. They represent two ways that additional R packages could strengthen my ability to answer business questions. For a public report, I would use aggregated customer locations rather than expose individual addresses.
+
+## Prompt 6: R versus Python
+
+**Prompt:** *Refer to the debate on R vs. Python. What is your take on this debate? In your response, consider how Quarto enables people using R and Python in the same team to still collaborate.*
+
+I do not think R versus Python has one universal winner. The best choice depends on the task, the team, existing systems, and the skills needed to maintain the project. R is especially strong for statistics, exploratory analysis, visualization, and communicating results to an analytical audience. Python is especially strong for general-purpose programming, software integration, automation, and many machine-learning workflows. Both are capable languages, and the quality of the analysis depends more on the question, data, design, and documentation than on the language label.
+
+Quarto makes collaboration across the two languages more practical. A team can use R and Python within a shared Quarto project while sharing Markdown narrative, headings, citations, cross-references, and output formats. The execution environment still needs to be configured correctly; a shared format does not automatically make every combination of R and Python code run. This means one team member can use the tool that best fits their part of the work without forcing the entire team into a single language. The shared document becomes a common communication layer: readers can focus on the question and evidence even when different languages are used underneath.
+
+For me, the broader lesson is that collaboration is easier when the team agrees on interfaces and conventions. A Quarto project can define a shared structure, naming style, rendering process, and publication method. R and Python remain different tools, but they can contribute to the same reproducible communication workflow.
+
+## Reflection and next steps
+
+This module changed my view of data analysis from a collection of isolated commands to a complete process. A strong analysis should be understandable to a reader, repeatable by a collaborator, and maintainable by my future self. My next step is to practice using project folders, version control, and Quarto together so that documentation becomes part of the normal workflow rather than an afterthought. I would begin with a small campaign report, check that its calculations can be regenerated, and then explain one useful business finding in plain language. I also want to become more comfortable distinguishing the source file, the rendering process, and the published output, because each serves a different purpose.
+
+## Appendix: Publication links
+
+-   **GitHub repository:** Publication URL not yet provided.
+-   **GitHub Pages report:** Publication URL not yet provided.
+
+The QMD source and the self-contained HTML report are supplied as the submission files. Online publication links can be added here once the report's repository and GitHub Pages addresses are available.
+
+## References
+
+CRAN. (n.d.). *randomForest: Breiman and Cutlers random forests for classification and regression*. <https://cran.r-project.org/web/packages/randomForest/index.html>
+
+Leaflet for R. (n.d.). *An R interface to Leaflet maps*. <https://rstudio.github.io/leaflet/>
+
+Quarto. (n.d.-a). *GitHub Pages*. <https://quarto.org/docs/publishing/github-pages.html>
+
+Quarto. (n.d.-b). *Using R*. <https://quarto.org/docs/computations/r.html>
+
+Tidyverse. (n.d.). *Tidyverse packages*. <https://tidyverse.org/packages/>
